@@ -5,7 +5,14 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        wave_pattern: "url('/wave.svg')",
+      },
+      colors: {
+        mygreen: "#D9EFE8",
+      },
+    },
   },
   plugins: [],
 };
