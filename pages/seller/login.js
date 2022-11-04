@@ -19,12 +19,13 @@ const Login = () => {
         password,
       };
       const {
-        data: { token },
+        data: { token, data },
       } = await axios.post(
         "http://malon.my.id:8888/api/seller/auth/signin",
         body
       );
       cookieCutter.set("token", token);
+      cookieCutter.set("toko_id", data?.toko_id || null);
       const result = await Swal.fire("Login Berhasil", "", "success");
       if (result.isConfirmed) router.push("/seller/dashboard");
     } catch (error) {

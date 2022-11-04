@@ -4,7 +4,6 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import cookieCutter from "cookie-cutter";
 
 const SignUp = () => {
   const [username, setUsername] = useState();
@@ -28,7 +27,6 @@ const SignUp = () => {
         "http://malon.my.id:8888/api/seller/auth/signup",
         body
       );
-      cookieCutter.set("createProfile", false);
       const result = await Swal.fire("Pendaftaran Berhasil", "", "success");
       if (result.isConfirmed) router.push("/seller/login");
     } catch (error) {

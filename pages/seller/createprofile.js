@@ -15,22 +15,28 @@ const Createprofile = () => {
   const router = useRouter();
   const alamatRef = useRef(null);
 
+  const uploadFile = (file) => {
+    const formdata = new FormData();
+    formdata.append("file", file);
+    setFile(file);
+    console.log(file);
+  };
+
   const createProfile = async (e) => {
     e.preventDefault();
     try {
-      const body = {
-        file,
-        name: namaToko,
-        toko_id: idToko,
-        alamat,
-      };
-      console.log(body);
+      const formdata = new FormData();
+      formdata.append("file", file);
+      formdata.append("name", namaToko);
+      formdata.append("toko_id", idToko);
+      formdata.append("alamat", alamat);
+      console.log(formdata);
       const token = cookieCutter.get("token") || null;
-      //   const { data } = await axios.post(
-      //     "http://malon.my.id:8888/api/seller/v1/shop/createtoko",
-      //     body,
-      //     { headers: { Authorization: `Bearer ${token}` } }
-      //   );
+      const { data } = await axios.post(
+        "http://malon.my.id:8888/api/seller/v1/shop/createtoko",
+        formdata,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       const result = await Swal.fire(
         "Berhasil",
         "Profil Toko telah dibuat",
@@ -70,7 +76,7 @@ const Createprofile = () => {
       >
         <input
           type="file"
-          onChange={(e) => setFile(e.target.value)}
+          onChange={(e) => uploadFile(e.target.files[0])}
           className="p-3 mb-6 rounded-3xl focus:outline-none font-medium hover:opacity-95"
         />
         <input
