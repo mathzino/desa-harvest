@@ -28,7 +28,13 @@ const DashboardNotification = ({ toko, refresh }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const transaction = data.filter((tsc) => tsc.status < 2);
+      transaction.sort((a, b) =>
+        a.date < b.date ? 1 : a.date > b.date ? -1 : 0
+      );
       const transactionComplete = data.filter((tsc) => tsc.status >= 2);
+      transactionComplete.sort((a, b) =>
+        a.date < b.date ? 1 : a.date > b.date ? -1 : 0
+      );
       setTransactionList(transaction);
       setCompleteTransactionList(transactionComplete);
     } catch (error) {
