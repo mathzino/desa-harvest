@@ -25,9 +25,13 @@ const Login = () => {
         body
       );
       cookieCutter.set("token", token);
-      cookieCutter.set("toko_id", data?.toko_id || null);
+      const toko_id = data?.toko_id || null;
+      cookieCutter.set("toko_id", toko_id);
       const result = await Swal.fire("Login Berhasil", "", "success");
-      if (result.isConfirmed) router.push("/seller/dashboard");
+      if (result.isConfirmed) {
+        if (toko_id !== null) router.push("/seller/dashboard");
+        else router.push("/seller/createprofile");
+      }
     } catch (error) {
       console.log(error);
       Swal.fire("Oops...", error.response.data.message, "error");
