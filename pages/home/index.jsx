@@ -1,5 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Tes from "../../components/atom/tes";
 
 export default function Home() {
-  return <div>Home</div>;
+  useEffect(() => {}, []);
+  return (
+    <div>
+      Home
+      <div>
+        <Tes></Tes>
+      </div>
+    </div>
+  );
 }

@@ -1,7 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import shopbag from "../../../assets/svg/shopbag.svg";
+import Shopbagcircle from "../../atom/shopbagcircle";
+import SettingCircle from "../../atom/settingcircle";
 import settinglogo from "../../../assets/svg/settinglogo.svg";
+import Notifcircle from "../../atom/notifcircle";
 export default function Sellersection() {
   return (
     <div className="">
@@ -12,12 +15,9 @@ export default function Sellersection() {
             <p className="text-xs text-white font-bold">Klik disini</p>
           </button>
           <div className=" flex gap-2">
-            <div className="h-9 w-9 rounded-full border border-[#ADCEC4] flex items-center justify-center">
-              <Image src={shopbag} alt="" />
-            </div>
-            <div className="h-9 w-9 rounded-full border border-[#ADCEC4] flex items-center justify-center">
-              <Image src={settinglogo} alt="" />
-            </div>
+            <Shopbagcircle colorStroke="#618D80" />
+            <Notifcircle colorStroke="#618D80" />
+            {/* <SettingCircle colorStroke="#618D80" /> */}
           </div>
         </div>
         <div></div>
