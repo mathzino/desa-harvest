@@ -1,0 +1,3 @@
+export const CART_ACTION_TYPES = {
+  CART_SAVE: "CART/CART_SAVE",
+};
