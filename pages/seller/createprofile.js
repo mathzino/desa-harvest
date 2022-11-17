@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import cookieCutter from "cookie-cutter";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
+import ShopPhotoCrop from "../../components/seller/ShopPhotoCrop";
 
 const Createprofile = () => {
   const [file, setFile] = useState();
@@ -12,14 +13,20 @@ const Createprofile = () => {
   const [idToko, setIdToko] = useState();
   const [alamat, setAlamat] = useState();
   const [height, setHeight] = useState(50);
+  const [isCropping, setIsCropping] = useState(false);
   const router = useRouter();
   const alamatRef = useRef(null);
 
   const uploadFile = (file) => {
     const formdata = new FormData();
     formdata.append("file", file);
+    const fileReader = new FileReader();
+    fileReader.onloadend = () => {
+      console.log("src => ", fileReader.result);
+    };
+    console.log("url => ", fileReader.readAsDataURL(file));
     setFile(file);
-    console.log(file);
+    setIsCropping(true);
   };
 
   const createProfile = async (e) => {
@@ -30,7 +37,6 @@ const Createprofile = () => {
       formdata.append("name", namaToko);
       formdata.append("toko_id", idToko);
       formdata.append("alamat", alamat);
-      console.log(formdata);
       const token = cookieCutter.get("token") || null;
       const { data } = await axios.post(
         "http://malon.my.id:8888/api/seller/v1/shop/createtoko",
@@ -42,7 +48,7 @@ const Createprofile = () => {
         "Profil Toko telah dibuat",
         "success"
       );
-      cookieCutter.set("createProfile", "", { expires: new Date(0) });
+      cookieCutter.set("toko_id", `${data.data.toko_id}`);
       if (result.isConfirmed) router.push("/seller/dashboard");
     } catch (error) {
       console.log(error);
@@ -64,21 +70,40 @@ const Createprofile = () => {
       <h1 className="text-lg font-bold text-slate-700 drop-shadow-sm mb-6 mr-auto sm:mx-auto">
         Buat Profil Dagangmu
       </h1>
+      {file && <ShopPhotoCrop image={URL.createObjectURL(file)} />}
       <Image
-        src="/default-profile.svg"
+        src={`${file ? URL.createObjectURL(file) : `/default-profile.svg`}`}
         height={200}
         width={200}
+        priority
+        style={{ display: isCropping ? "none" : "" }}
+        className="rounded-full"
         alt="profile"
       ></Image>
       <form
         onSubmit={(e) => createProfile(e)}
         className="flex flex-col w-full sm:w-96 p-12 text-slate-600"
       >
-        <input
+        {/* <input
           type="file"
+          accept=".jpg, .png, .svg, .jfif, .webp"
           onChange={(e) => uploadFile(e.target.files[0])}
           className="p-3 mb-6 rounded-3xl focus:outline-none font-medium hover:opacity-95"
-        />
+        /> */}
+        <div className="p-3 m-6 mt-0 rounded-full relative bg-mygreen_dark/70 hover:bg-mygreen_dark hover:cursor-pointer transition-colors">
+          <input
+            type="file"
+            accept=".jpg, .png, .svg, .jfif, .webp"
+            onChange={(e) => uploadFile(e.target.files[0])}
+            className="absolute hover:cursor-pointer rounded-3xl w-full h-full top-0 left-0 opacity-0 focus:outline-none font-normal text-sm form-control"
+          />
+          <div className="flex">
+            <p className="font-bold text-center text-white w-full">
+              Unggah Foto Profil
+            </p>
+            <div className="bg-white bg-[url('/icons/upload.svg')] absolute -left-3 -top-3 my-auto rounded-full shadow-md w-[40px] h-[40px]"></div>
+          </div>
+        </div>
         <input
           type="text"
           placeholder="Nama Toko"
