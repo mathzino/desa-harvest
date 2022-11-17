@@ -10,6 +10,7 @@ module.exports = {
         wave_pattern: "url('/wave.svg')",
       },
       colors: {
+        mygreen_dark: "#618D80",
         mygreen: "#D9EFE8",
       },
     },
