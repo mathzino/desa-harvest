@@ -7,7 +7,6 @@ const DashboardReport = () => {
   const [totalProduct, setTotalProduct] = useState();
   const [menu, setMenu] = useState("all");
   const getReport = async () => {
-    console.log("running");
     const token = cookieCutter.get("token");
     const toko_id = cookieCutter.get("toko_id");
     try {
@@ -21,7 +20,6 @@ const DashboardReport = () => {
       let total = 0;
       data.product.map((prod) => total++);
       setTotalProduct(total);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
