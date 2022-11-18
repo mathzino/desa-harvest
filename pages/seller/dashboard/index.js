@@ -36,7 +36,7 @@ const SellerDashboard = () => {
       setDataToko(data);
       image_profile = data.image_profile;
     } catch (error) {
-      // router.push("/seller/createprofile");
+      router.push("/seller/createprofile");
       console.log(error.response);
     }
     try {

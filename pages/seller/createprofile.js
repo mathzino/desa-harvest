@@ -17,6 +17,14 @@ const Createprofile = () => {
   const router = useRouter();
   const alamatRef = useRef(null);
 
+  useEffect(() => {
+    (async () => {
+      const toko_id = cookieCutter.get("toko_id") || null;
+      if (toko_id) router.push("/seller/dashboard");
+      else router.push("/seller/pending");
+    })();
+  });
+
   const uploadFile = (file) => {
     const formdata = new FormData();
     formdata.append("file", file);
@@ -62,6 +70,7 @@ const Createprofile = () => {
       setHeight(element.scrollHeight);
     }
   }, [alamat]);
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-mygreen p-6">
       <Head>

@@ -26,10 +26,11 @@ const Logout = () => {
         router.push("/seller/login");
       } catch (error) {
         console.log(error.response);
+        router.push("/seller/login");
       }
     } else if (result.isDenied) {
       Swal.fire("", "Logout dibatalkan", "success");
-      router.push("/seller/dashboard/settings");
+      router.push("/seller/dashboard/");
     }
   };
   const controller = new AbortController();

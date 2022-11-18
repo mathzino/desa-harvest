@@ -10,13 +10,6 @@ const DashboardReport = () => {
     console.log("running");
     const token = cookieCutter.get("token");
     const toko_id = cookieCutter.get("toko_id");
-    // (async() => {
-    //     try {
-    //         const {data}
-    //     } catch (error) {
-
-    //     }
-    // })()
     try {
       const {
         data: { data },

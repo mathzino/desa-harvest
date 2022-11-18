@@ -167,6 +167,7 @@ const AddProduct = () => {
           <option value="Obat">Obat</option>
           <option value="Bumbu">Bumbu</option>
           <option value="Perlengkapan">Perlengkapan</option>
+          <option value="Lainnya">Lainnya</option>
         </select>
         <button
           type="submit"
