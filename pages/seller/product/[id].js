@@ -18,30 +18,20 @@ const ProductDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { id } = router.query;
-  // const getTokoId = async () => {
-  //   const tokoId = cookieCutter.get("toko_id");
-  //   const token = cookieCutter.get("token");
-  //   try {
-  //     const {
-  //       data: { data },
-  //     } = await axios.get(
-  //       `http://malon.my.id:8888/api/seller/v1/shop/data/${tokoId}`,
-  //       { headers: { Authorization: `Bearer ${token}` } }
-  //     );
-  //     setTokoId(data._id);
-  //     return data._id;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
+  const controller = new AbortController();
   useEffect(() => {
     if (!id) return;
-    getDetailProduct();
+    const signal = controller.signal.aborted;
+    !signal && getDetailProduct();
+    return () => controller.abort();
   }, [id]);
 
+  useEffect(() => {
+    getTokoId();
+  }, []);
+
   const getDetailProduct = async () => {
-    console.log("id", id);
     try {
       const {
         data: {
@@ -50,10 +40,9 @@ const ProductDetail = () => {
       } = await axios.get(
         `http://malon.my.id:8888/api/seller/v1/product/data/${id}`
       );
-      console.log(product);
-      product.image.map((img) =>
-        setFilename((current) => [...current, img.filename])
-      );
+      product.image.map((img) => {
+        setFilename((current) => [img.filename, ...current]);
+      });
       setName(product.name);
       setPrice(product.price);
       setProductUom(product.product_uom);
@@ -62,6 +51,22 @@ const ProductDetail = () => {
       setIsLoading(false);
     } catch (error) {
       console.log("sosas");
+    }
+  };
+
+  const getTokoId = async () => {
+    const tokoId = cookieCutter.get("toko_id");
+    const token = cookieCutter.get("token");
+    try {
+      const {
+        data: { data },
+      } = await axios.get(
+        `http://malon.my.id:8888/api/seller/v1/shop/data/${tokoId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setTokoId(data._id);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -74,27 +79,29 @@ const ProductDetail = () => {
     console.log(arrayFile);
   };
 
-  const addProduct = async (e) => {
+  const editProduct = async (e) => {
     e.preventDefault();
     try {
       const formdata = new FormData();
-      files.map((file) => {
-        formdata.append("files", file);
-      });
+      files &&
+        files.map((file) => {
+          formdata.append("files", file);
+        });
       formdata.append("name", name);
       formdata.append("qt", qt);
       formdata.append("price", price);
       formdata.append("product_uom", product_uom);
       formdata.append("product_category", product_category);
       const token = cookieCutter.get("token") || null;
-      const { data } = await axios.post(
-        `http://malon.my.id:8888/api/seller/v1/product/create-product/${toko_id}`,
+      const { data } = await axios.put(
+        `http://malon.my.id:8888/api/seller/v1/product/data/${toko_id}/${id}`,
         formdata,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      console.log(formdata);
       const result = await Swal.fire(
         "Berhasil",
-        "Produk Berhasil Ditambahkan",
+        "Produk Berhasil di Ubah",
         "success"
       );
       if (result.isConfirmed) window.location.href = "/seller/dashboard";
@@ -107,7 +114,7 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-mygreen p-6">
       <Head>
-        <title>Add Product</title>
+        <title>Edit Product</title>
       </Head>
       <h1 className="text-lg font-bold text-slate-700 drop-shadow-sm mb-6 mr-auto sm:mx-auto">
         Tambah Produk
@@ -152,7 +159,7 @@ const ProductDetail = () => {
       )}
 
       <form
-        onSubmit={(e) => addProduct(e)}
+        onSubmit={(e) => editProduct(e)}
         className="flex flex-col w-full sm:w-96 p-12 text-slate-600"
       >
         <input
@@ -220,7 +227,7 @@ const ProductDetail = () => {
           type="submit"
           className="p-3 mb-6 rounded-3xl bg-red-400 font-bold text-white hover:bg-red-500/90 transition-colors"
         >
-          Tambah Produk
+          Simpan Perubahan
         </button>
       </form>
     </div>
