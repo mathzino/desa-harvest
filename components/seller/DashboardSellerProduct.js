@@ -16,15 +16,15 @@ const DashboardSellerProduct = ({ product, toko }) => {
         const token = cookieCutter.get("token") || null;
         try {
           const { data } = await axios.get(
-            `http://malon.my.id:8888/api/seller/v1/product/star/${prod._id}`,
+            `http://malon.my.id:8888/api/seller/v1/product/star/${prod.id_product}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           prod.star = data.data.total_star;
+          console.log(data);
           temp.push(prod);
           setProductWithStar(temp);
         } catch (error) {
           if (error.response.data?.message === "Id product tidak ditemukan") {
-            console.clear();
             prod.star = 0;
             temp.push(prod);
             setProductWithStar(temp);

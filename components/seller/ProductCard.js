@@ -2,11 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 const ProductCard = ({ id, image, name, price, uom, toko, star }) => {
-  // image.map((img) => {
-  //   console.log(
-  //     `http://malon.my.id:8888/api/seller/file/product/${img.filename}`
-  //   );
-  // });
   return (
     <div className="rounded-xl shadow-lg shadow-slate-500/10 bg-white hover:scale-95 transition-all hover:cursor-pointer w-40">
       <Link href={`/seller/product/${id}`}>
@@ -32,11 +27,7 @@ const ProductCard = ({ id, image, name, price, uom, toko, star }) => {
             {price}/{uom}
           </p>
           <div className="mb-3 flex">
-            {star === 0 ? (
-              <p className="text-xs font-light text-mygreen_dark">
-                No Review Yet.
-              </p>
-            ) : (
+            {star > 0 ? (
               <>
                 <p className="text-xs mr-1 text-mygreen_dark">{star}</p>
                 {[...Array(Math.round(star)).keys()].map((st, id) => (
@@ -49,6 +40,10 @@ const ProductCard = ({ id, image, name, price, uom, toko, star }) => {
                   ></Image>
                 ))}
               </>
+            ) : (
+              <p className="text-xs font-light text-mygreen_dark">
+                No Review Yet.
+              </p>
             )}
           </div>
           <div className="flex gap-2 items-end">
