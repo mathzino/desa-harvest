@@ -20,7 +20,6 @@ const DashboardSellerProduct = ({ product, toko }) => {
             { headers: { Authorization: `Bearer ${token}` } }
           );
           prod.star = data.data.total_star;
-          console.log(data);
           temp.push(prod);
           setProductWithStar(temp);
         } catch (error) {
