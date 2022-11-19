@@ -11,6 +11,7 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+    domains: ["malon.my.id"],
   },
 };
 
